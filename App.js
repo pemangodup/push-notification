@@ -1,10 +1,56 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, Button, View, Alert } from "react-native";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+    shouldShowAlert: true,
+  }),
+});
 
 export default function App() {
+  useEffect(() => {
+    async function configureNotifications() {
+      const { status } = await Notifications.getPermissionsAsync();
+
+      let finalStatus = status;
+      if (status !== "granted") {
+        const { status: newStatus } =
+          await Notifications.requestPermissionsAsync();
+        finalStatus = newStatus;
+      }
+
+      if (finalStatus !== "granted") {
+        Alert.alert(
+          "Permission required",
+          "We need notification permission to show notifications."
+        );
+      }
+    }
+
+    configureNotifications();
+  }, []);
+
+  async function scheduleNotificationHandler() {
+    console.log("I pressed here.");
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "My first local notification.",
+        body: "This is the body of the notification.",
+        data: { userName: "Pema" },
+      },
+      trigger: {
+        seconds: 10,
+      },
+    });
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Hello World!</Text>
+      <Button title="Press Me" onPress={scheduleNotificationHandler} />
       <StatusBar style="auto" />
     </View>
   );
