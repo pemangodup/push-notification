@@ -34,6 +34,27 @@ export default function App() {
     configureNotifications();
   }, []);
 
+  useEffect(() => {
+    const subscription1 = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("NOTIFICATION RECEIVED");
+        console.log(JSON.stringify(notification, null, 2));
+      }
+    );
+
+    const subscription2 = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log("NOTIFICATION RESPONSE RECEIVED");
+        console.log(JSON.stringify(response, null, 2));
+      }
+    );
+
+    return () => {
+      subscription1.remove();
+      subscription2.remove();
+    };
+  }, []);
+
   async function scheduleNotificationHandler() {
     console.log("I pressed here.");
     await Notifications.scheduleNotificationAsync({
