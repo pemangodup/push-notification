@@ -35,6 +35,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    Notifications.getExpoPushTokenAsync().then((pushTokenData) => {
+      console.log("Push Token Data");
+      console.log(pushTokenData);
+    });
+  });
+
+  useEffect(() => {
     const subscription1 = Notifications.addNotificationReceivedListener(
       (notification) => {
         console.log("NOTIFICATION RECEIVED");
@@ -44,8 +51,8 @@ export default function App() {
 
     const subscription2 = Notifications.addNotificationResponseReceivedListener(
       (response) => {
-        console.log("NOTIFICATION RESPONSE RECEIVED");
-        console.log(JSON.stringify(response, null, 2));
+        // console.log("NOTIFICATION RESPONSE RECEIVED");
+        // console.log(JSON.stringify(response, null, 2));
       }
     );
 
@@ -56,7 +63,7 @@ export default function App() {
   }, []);
 
   async function scheduleNotificationHandler() {
-    console.log("I pressed here.");
+    // console.log("I pressed here.");
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "My first local notification.",
