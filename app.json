@@ -32,10 +32,15 @@
           "icon": "./local/assets/icon.png",
           "color": "#ffffff",
           "defaultChannel": "default",
-
           "enableBackgroundRemoteNotifications": false
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a5eb6565-3887-4fac-9503-8b3c13f88135"
+      }
+    },
+    "owner": "pemangodup"
   }
 }
